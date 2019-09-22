@@ -27,7 +27,7 @@ RUN npm install -g express-generator && \
 # install gulp
 RUN npm install gulp-cli -g
 
-# install forever
+# install nodemon
 RUN npm install nodemon -g
 
 # download vscode and code-server
