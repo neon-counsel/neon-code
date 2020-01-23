@@ -38,4 +38,12 @@ router.post('register', function(req, res, next){
   });
 });
 
+
+//Create a JWT
+function createJWT(profile){
+  return jwt.sign(profile, 'insertmessagehere',{
+    expiresIn: '10d'
+  });
+}
+
 module.exports = router;
