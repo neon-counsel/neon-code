@@ -5,8 +5,9 @@ require('./util');
 
 var usersSchema = new Schema({
   user_name: {type : String},
-  password: String,
-  access_token: String});
+  password: {type : String},
+  access_token: {type : String}
+});
 
 //Hash password for storage in DB
 usersSchema.methods.generateHash = function(password){

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../models./users');
+var User = require('../models/users');
 var jwt = require('jsonwebtoken');
 
 /* GET users listing. */
@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
-router.post('register', function(req, res, next){
+router.post('/register', function(req, res, next){
   var username = req.body.user_name;
   var password = req.body.password;
   //Check if account already exists
@@ -41,7 +41,7 @@ router.post('register', function(req, res, next){
 router.post('/login', function(req, res, next){
   var username = req.body.user_name;
   var password = req.body.password;
-  User.findOne{('user_name' : username}, function(err, user){
+  User.findOne({'user_name' : username}, function(err, user){
     //If there are any errors, return the error
     if(err)
       res.send(err);
