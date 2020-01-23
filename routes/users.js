@@ -38,6 +38,36 @@ router.post('register', function(req, res, next){
   });
 });
 
+router.post('/login', function(req, res, next){
+  var username = req.body.user_name;
+  var password = req.body.password;
+  User.findOne{('user_name' : username}, function(err, user){
+    //If there are any errors, return the error
+    if(err)
+      res.send(err);
+    //If user account found then check the password
+    if(user){
+      //Compare passwords
+      if(user.validPassword(password)){
+        //Success: Assign new access tokens for the sessions
+        user.access_token = createJWT({user_name : username});
+        user.save();
+        res.cookie('Authorisation', 'Bearer', + user.access_token);
+        res.json({'Success' : 'Logged in'});
+      } else{
+        res.status(401).send({
+          "status": "error",
+          "body": "Email or password does not match"
+        });
+      }
+    } else{
+      res.status(401).send({
+        "status": "error",
+        "body": "Username not found"
+      });
+    }
+  });
+});
 
 //Create a JWT
 function createJWT(profile){
