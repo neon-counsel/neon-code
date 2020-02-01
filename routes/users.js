@@ -24,14 +24,14 @@ router.post('/register', function(req, res, next){
     } else{
       //If there is no user with that username, create the user
       var newUser = new User();
-      //Set the user's local creditionals
+      //Set the user's local credentials
       newUser.user_name = username;
       newUser.password = newUser.generateHash(password);
       newUser.access_token = createJWT({user_name:username});
       newUser.save(function(err, user){
         if(err)
           throw err;
-        res.cookie('Authorisation', 'Bearer' + user.access_token);
+        res.cookie('Authorization', 'Bearer ' + user.access_token);
         res.json({'Success' : 'Account created'});
       });
     }
@@ -52,7 +52,7 @@ router.post('/login', function(req, res, next){
         //Success: Assign new access tokens for the sessions
         user.access_token = createJWT({user_name : username});
         user.save();
-        res.cookie('Authorisation', 'Bearer', + user.access_token);
+        res.cookie('Authorization', 'Bearer ' + user.access_token);
         res.json({'Success' : 'Logged in'});
       } else{
         res.status(401).send({
