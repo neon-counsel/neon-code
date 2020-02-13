@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-require('.util');
+require('./util');
 
 var projectsSchema = new Schema({
     project_name: { type: String },

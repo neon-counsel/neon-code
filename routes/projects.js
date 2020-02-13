@@ -17,13 +17,25 @@ router.post('/new', function(req, res, next){
         } else{
             var newProject = new Project();
 
-            newProject.project_name;
+            newProject.project_name = projectname;
             newProject.save(function(err, project){
                 if(err)
                     throw err;
                 res.json({ 'Success': "Project created"});
             });
         }
+    });
+});
+
+router.get('/', function(req, res) {
+    Project.find({}, function(err, projects) {
+        var projectMap = {};
+
+        projects.forEach(function(project){
+            projectMap[project.project_name] = project;
+        });
+
+        res.send(projectMap);
     });
 });
 
