@@ -8,6 +8,10 @@ router.get('/', function(req, res, next) {
     res.send('respond with a resource');
 });
 
+router.get('/register', function(req, res, next) {
+  res.render('register', { title: 'Neon Code' });
+});
+
 router.post('/register', function(req, res, next) {
     var username = req.body.user_name;
     var password = req.body.password;
