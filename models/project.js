@@ -6,7 +6,8 @@ var projectsSchema = new Schema({
     project_name: { type: String },
     location: { type: String },
     user_id: { type: String },
-    when_created: { type: Date }
+    when_created: { type: Date },
+    project_description: { type: String }
 });
 
 module.exports = mongoose.model('Project', projectsSchema);
