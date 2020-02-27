@@ -78,6 +78,11 @@ router.post('/login', function(req, res, next) {
     });
 });
 
+router.get('/logout', function(req, res, next) {
+    res.clearCookie("Authorization");
+    res.redirect('/');
+});
+
 //Create a JWT
 function createJWT(profile) {
     return jwt.sign(profile, 'insertmessagehere', {
