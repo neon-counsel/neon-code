@@ -5,6 +5,26 @@ $(document).ready(
          */
         $("#reg-form").submit(function(event) {
             event.preventDefault();
+
+            var pass = $('#inputPassword').val();
+            var pass2 = $('#confirmPassword').val();
+            var isFail = false;
+
+
+
+                  if( !$(this).val() ) {
+                        swal('Please fill all fields!');
+                        isFail = true;
+                        if(pass != pass2){
+                            swal('The Passwords Do Not Match!');
+                            isFail = true;
+                        }
+                  }
+
+
+
+            if(!isFail)
+            {
             $.ajax({
                 type: 'POST',
                 url: '/users/register',
@@ -25,7 +45,9 @@ $(document).ready(
                     )
                 }
             });
+            }
         });
+
 
         $("#log-form").submit(function(event) {
             event.preventDefault();
