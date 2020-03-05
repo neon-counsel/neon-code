@@ -1,6 +1,10 @@
 body {
+<<<<<<< HEAD
     <<<<<<< HEAD padding: 50px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+=======
+    font-family: "Lato", sans-serif;
+>>>>>>> 2a01fa5fde71f7536bedd121814a7171f5c7debc
 }
 
 a {
