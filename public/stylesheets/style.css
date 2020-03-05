@@ -1,10 +1,87 @@
 body {
+<<<<<<< HEAD
     padding: 50px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
     color: #00B7FF;
+=======
+    font-family: "Lato", sans-serif;
+}
+
+
+
+.main-head{
+    height: 150px;
+    background: #FFF;
+   
+}
+
+.sidenav {
+    height: 100%;
+    background-color: black;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+
+.main {
+    padding: 0px 10px;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 10px;}
+}
+
+@media screen and (max-width: 450px) {
+    .login-form{
+        margin-top: 500%;
+    }
+
+    .register-form{
+        margin-top: 10%;
+    }
+}
+
+@media screen and (min-width: 768px){
+    .main{
+        margin-left: 60%; 
+    }
+
+    .sidenav{
+        width: 40%;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+    }
+
+    .login-form{
+        margin-top: 100%;
+    }
+
+    .register-form{
+        margin-top: 10%;
+    }
+}
+
+
+.login-main-text{
+    margin-top: 10%;
+    padding: 60px;
+    color: #fff;
+}
+
+.login-main-text h2{
+    font-weight: 500;
+	font-size: 50px;
+}
+
+.btn-black{
+    background-color: #000 !important;
+    color: #fff;
+>>>>>>> bb34e3fc65cb2f12081bb80d4396ce43713d7ed1
 }
 
 .btn {
