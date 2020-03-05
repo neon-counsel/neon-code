@@ -17,7 +17,8 @@ router.post('/new', function(req, res, next){
         
         if (profile) {
             var projectname = req.body.project_name;
-
+            var description = req.body.description;
+            var privacy = req.body.privacy;
             Project.findOne({ 'project_name': projectname }, function(err, project) {
                 if(err)
                     res.send(err);
@@ -31,6 +32,9 @@ router.post('/new', function(req, res, next){
                     var newProject = new Project();
         
                     newProject.project_name = projectname;
+                    newProject.project_description = description;
+                    newProject.publicORprivate = privacy;
+                    newProject.when_created = new Date();
                     newProject.user_id = profile.user_name;
                     newProject.save(function(err, project){
                         if(err)
