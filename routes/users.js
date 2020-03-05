@@ -8,9 +8,14 @@ router.get('/', function(req, res, next) {
     res.send('respond with a resource');
 });
 
+router.get('/register', function(req, res, next) {
+  res.render('register', { title: 'Neon Code' });
+});
+
 router.post('/register', function(req, res, next) {
     var username = req.body.user_name;
     var password = req.body.password;
+    var email = req.body.email;
     //Check if account already exists
     User.findOne({ 'user_name': username }, function(err, user) {
         if (err)
@@ -27,6 +32,7 @@ router.post('/register', function(req, res, next) {
             //Set the user's local credentials
             newUser.user_name = username;
             newUser.password = newUser.generateHash(password);
+            newUser.email = email;
             newUser.access_token = createJWT({ user_name: username });
             newUser.save(function(err, user) {
                 if (err)
@@ -72,6 +78,11 @@ router.post('/login', function(req, res, next) {
             });
         }
     });
+});
+
+router.get('/logout', function(req, res, next) {
+    res.clearCookie("Authorization");
+    res.redirect('/');
 });
 
 //Create a JWT
