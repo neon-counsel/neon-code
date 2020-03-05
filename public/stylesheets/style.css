@@ -1,15 +1,12 @@
 body {
-<<<<<<< HEAD
-    <<<<<<< HEAD padding: 50px;
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-=======
     font-family: "Lato", sans-serif;
->>>>>>> 2a01fa5fde71f7536bedd121814a7171f5c7debc
 }
+
+
 
 a {
     color: #00B7FF;
-    =======font-family: "Lato", sans-serif;
+    font-family: "Lato", sans-serif;
 }
 
 .main-head {
