@@ -5,7 +5,6 @@ var jwt = require('jsonwebtoken');
 //Verify a JWT
 function verifyJWT(jwtString){
   var value = jwt.verify(jwtString, 'insertmessagehere');
-  console.log(value);
   return value;
 }
 
