@@ -10,6 +10,25 @@ function verifyJWT(jwtString){
   }
   
 
+router.get('/', function(req, res, next){
+    try {
+        var jwtString = req.cookies.Authorization.split(" ");
+        var profile = verifyJWT(jwtString[1]);
+        
+        if (profile) {
+            Project.find({}, function(err, projects) {
+        
+                res.render('explore', { title: 'Neon Code', profile: profile, projects: projects});
+            });
+        }
+    } catch (err) {
+        res.status(401).json({
+            "status": "info",
+            "body": "Not allowed."
+        });
+    }
+});
+
 router.post('/new', function(req, res, next){
     try {
         var jwtString = req.cookies.Authorization.split(" ");
@@ -50,19 +69,18 @@ router.post('/new', function(req, res, next){
             "body": "Not allowed."
         });
     }
-    
 });
 
-router.get('/', function(req, res) {
-    Project.find({}, function(err, projects) {
-        var projectMap = {};
+// router.get('/', function(req, res) {
+//     Project.find({}, function(err, projects) {
+//         var projectMap = {};
 
-        projects.forEach(function(project){
-            projectMap[project.project_name] = project;
-        });
+//         projects.forEach(function(project){
+//             projectMap[project.project_name] = project;
+//         });
 
-        res.send(projectMap);
-    });
-});
+//         res.send(projectMap);
+//     });
+// });
 
 module.exports = router;
