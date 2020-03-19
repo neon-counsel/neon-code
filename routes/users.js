@@ -3,13 +3,30 @@ var router = express.Router();
 var User = require('../models/users');
 var jwt = require('jsonwebtoken');
 
+//Verify a JWT
+function verifyJWT(jwtString) {
+    var value = jwt.verify(jwtString, 'insertmessagehere');
+    return value;
+}
 /* GET users listing. */
 router.get('/', function(req, res, next) {
     res.send('respond with a resource');
 });
 
 router.get('/register', function(req, res, next) {
-  res.render('register', { title: 'Neon Code' });
+    res.render('register', { title: 'Neon Code' });
+});
+router.get('/profile', function(req, res, next) {
+    try {
+        var jwtString = req.cookies.Authorization.split(" ");
+        var profile = verifyJWT(jwtString[1]);
+        if (profile) {
+            res.render('profile', { title: 'Neon Code', profile: profile });
+        }
+    } catch (err) {
+        res.render('index', { title: 'Neon Code' });
+    }
+
 });
 
 router.post('/register', function(req, res, next) {
