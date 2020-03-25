@@ -71,7 +71,7 @@ body {
 }
 
 .btn-black{
-    background-color: #000 !important;
+    background-color: #000 !simportant;
     color: #fff;
 }
 
@@ -79,3 +79,12 @@ body {
 .btn{
   margin: 5px;
 }
+
+#passstrength {
+    color:red;
+    font-family:verdana;
+    font-size:10px;
+    font-weight:bold;
+}
+
+
