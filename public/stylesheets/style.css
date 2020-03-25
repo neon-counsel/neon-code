@@ -2,12 +2,14 @@ body {
     font-family: "Lato", sans-serif;
 }
 
+a {
+    color: #00B7FF;
+    font-family: "Lato", sans-serif;
+}
 
-
-.main-head{
+.main-head {
     height: 150px;
     background: #FFF;
-   
 }
 
 .sidenav {
@@ -17,65 +19,197 @@ body {
     padding-top: 20px;
 }
 
-
 .main {
     padding: 0px 10px;
 }
 
 @media screen and (max-height: 450px) {
-    .sidenav {padding-top: 10px;}
+    .sidenav {
+        padding-top: 10px;
+    }
 }
 
 @media screen and (max-width: 450px) {
-    .login-form{
+    .login-form {
         margin-top: 500%;
     }
-
-    .register-form{
+    .register-form {
         margin-top: 10%;
     }
 }
 
-@media screen and (min-width: 768px){
-    .main{
-        margin-left: 60%; 
+@media screen and (min-width: 768px) {
+    .main {
+        margin-left: 60%;
     }
-
-    .sidenav{
+    .sidenav {
         width: 40%;
         position: fixed;
         z-index: 1;
         top: 0;
         left: 0;
     }
-
-    .login-form{
+    .login-form {
         margin-top: 100%;
     }
-
-    .register-form{
+    .register-form {
         margin-top: 10%;
     }
 }
 
-
-.login-main-text{
+.login-main-text {
     margin-top: 10%;
     padding: 60px;
     color: #fff;
 }
 
-.login-main-text h2{
+.login-main-text h2 {
     font-weight: 500;
-	font-size: 50px;
+    font-size: 50px;
 }
 
-.btn-black{
+.btn-black {
     background-color: #000 !important;
     color: #fff;
 }
 
+.btn {
+    margin: 5px;
+}
 
-.btn{
-  margin: 5px;
+.user-label {
+    line-height: 0;
+}
+
+.form-check-label {
+    line-height: 0;
+}
+
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+    }
+}
+
+.emp-profile {
+    padding: 3%;
+    margin-top: 3%;
+    margin-bottom: 3%;
+    border-radius: 0.5rem;
+    background: #fff;
+}
+
+.profile-img {
+    text-align: center;
+}
+
+.profile-img img {
+    width: 70%;
+    height: 100%;
+}
+
+.profile-img .file {
+    position: relative;
+    overflow: hidden;
+    margin-top: -43%;
+    width: 70%;
+    border: none;
+    border-radius: 0;
+    font-size: 15px;
+    background: #212529b8;
+}
+
+.profile-img .file input {
+    position: absolute;
+    opacity: 0;
+    right: 0;
+    top: 0;
+}
+
+.profile-head h5 {
+    color: #333;
+}
+
+.profile-head h6 {
+    color: #0062cc;
+}
+
+.profile-edit-btn {
+    border: none;
+    border-radius: 1.5rem;
+    width: 70%;
+    padding: 2%;
+    font-weight: 600;
+    color: #6c757d;
+    cursor: pointer;
+}
+
+.proile-rating {
+    font-size: 12px;
+    color: #818182;
+    margin-top: 5%;
+}
+
+.proile-rating span {
+    color: #495057;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.profile-head .nav-tabs {
+    margin-bottom: 5%;
+}
+
+.profile-head .nav-tabs .nav-link {
+    font-weight: 600;
+    border: none;
+}
+
+.profile-head .nav-tabs .nav-link.active {
+    border: none;
+    border-bottom: 2px solid #0062cc;
+}
+
+.profile-work {
+    padding: 14%;
+    margin-top: -15%;
+}
+
+.profile-work p {
+    font-size: 12px;
+    color: #818182;
+    font-weight: 600;
+    margin-top: 10%;
+}
+
+.profile-work a {
+    text-decoration: none;
+    color: #495057;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.profile-work ul {
+    list-style: none;
+}
+
+.profile-tab label {
+    font-weight: 600;
+}
+
+.profile-img {
+    margin-right: 20px;
+}
+
+.file btn btn-lg btn-primary {
+    margin-left: -3px;
 }
