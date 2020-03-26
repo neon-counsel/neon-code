@@ -213,3 +213,11 @@ a {
 .file btn btn-lg btn-primary {
     margin-left: -3px;
 }
+
+#passstrength {
+    color:red;
+    font-family:verdana;
+    font-size:10px;
+    font-weight:bold;
+}
+
