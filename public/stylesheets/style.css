@@ -213,3 +213,26 @@ a {
 .file btn btn-lg btn-primary {
     margin-left: -3px;
 }
+
+.btn btn-primary {
+    position: absolute;
+    margin-left: 50px;
+}
+
+.dropdown {
+    position: absolute;
+    padding-left: 15px;
+    display: inline-block;
+}
+
+.btn btn-secondary {
+    position: absolute;
+    margin-left: 40px;
+    min-width: 50px;
+}
+
+.btn btn-secondary dropdown-toggle {
+    position: absolute;
+    margin-left: 40px;
+    min-width: 50px;
+}

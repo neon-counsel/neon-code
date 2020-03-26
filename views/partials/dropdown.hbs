@@ -1,11 +1,13 @@
 <div class="dropdown">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false">
-        {{profile.user_name}}
+        <a>{{profile.user_name}}</a>
+        
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" href="#">Profile</a>
+        <a class="dropdown-item" href="/users/profile">Profile</a>
         <a class="dropdown-item" href="#">Settings</a>
         <a class="dropdown-item" href="/users/logout">Logout</a>
     </div>
 </div>
+
