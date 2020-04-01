@@ -22,9 +22,9 @@ router.get('/', function(req, res, next){
             });
         }
     } catch (err) {
-        res.status(401).json({
-            "status": "info",
-            "body": "Not allowed."
+        Project.find({publicORprivate: "public"}, function(err, projects) {
+        
+            res.render('explore', { title: 'Neon Code', projects: projects});
         });
     }
 });
