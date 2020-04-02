@@ -236,3 +236,11 @@ a {
     margin-left: 40px;
     min-width: 50px;
 }
+
+#passstrength {
+    color:red;
+    font-family:verdana;
+    font-size:10px;
+    font-weight:bold;
+}
+
