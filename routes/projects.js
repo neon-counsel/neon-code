@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Project = require('../models/project');
 var jwt = require('jsonwebtoken');
+var moment = require('moment');
 
 //Verify a JWT
 function verifyJWT(jwtString){
@@ -28,6 +29,32 @@ router.get('/', function(req, res, next){
         });
     }
 });
+
+router.get('/:user/:project', function(req, res, next){
+    var user = req.params.user;
+    var project = req.params.project;
+
+    try {
+        var jwtString = req.cookies.Authorization.split(" ");
+        var profile = verifyJWT(jwtString[1]);
+        
+        if (profile) {
+            Project.findOne({user_id: user, project_name: project}, function(err, project) {
+                if(err)
+                    res.send(err);
+                
+                var created = moment(project.when_created).format("DD/MM/YYYY");
+                res.render('project', { title: 'Neon Code', profile: profile, project: project, created: created});
+            });
+        }
+    } catch (err) {
+        Project.find({publicORprivate: "public"}, function(err, projects) {
+        
+            res.render('explore', { title: 'Neon Code', projects: projects});
+        });
+    }
+});
+
 
 router.post('/new', function(req, res, next){
     try {
