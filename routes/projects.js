@@ -2,12 +2,15 @@ var express = require('express');
 var router = express.Router();
 var Project = require('../models/project');
 var jwt = require('jsonwebtoken');
+const {Docker} = require('node-docker-api');
+
+const docker = new Docker({ socketPath: '/var/run/docker.sock' });
 
 //Verify a JWT
 function verifyJWT(jwtString){
     var value = jwt.verify(jwtString, 'insertmessagehere');
     return value;
-  }
+}
   
 
 router.get('/', function(req, res, next){
@@ -58,8 +61,13 @@ router.post('/new', function(req, res, next){
                     newProject.save(function(err, project){
                         if(err)
                             throw err;
+                        docker.container.create({
+                            Image: 'neoncounsel/neon-code',
+                            name: project._id+''}).catch(error => console.log(error));
                         res.json({ 'Success': "Project created"});
+
                     });
+                   
                 }
             });
         }
@@ -70,17 +78,5 @@ router.post('/new', function(req, res, next){
         });
     }
 });
-
-// router.get('/', function(req, res) {
-//     Project.find({}, function(err, projects) {
-//         var projectMap = {};
-
-//         projects.forEach(function(project){
-//             projectMap[project.project_name] = project;
-//         });
-
-//         res.send(projectMap);
-//     });
-// });
 
 module.exports = router;
