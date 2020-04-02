@@ -1,0 +1,20 @@
+{{> header}}
+{{> create_project}}
+<div class="container emp-profile" style="background-color: #F0F0F0;">
+        <div class="row">
+            <div class="col-md-10" >
+                <h4>
+                    <a href="/users/{{project.user_id}}">{{project.user_id}}</a> / <a href="/projects/{{project.user_id}}/{{project.project_name}}">{{project.project_name}}</a>
+                </h4>
+                <p>{{created}}</p>
+                <p>{{project.project_description}}</p>
+                
+            </div>
+        </div> 
+
+        <div class="row">
+            <div class="col-md-10">
+                {{readme}}
+            </div>
+        </div> 
+</div>
