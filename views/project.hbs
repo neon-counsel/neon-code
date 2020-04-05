@@ -1,20 +1,31 @@
 {{> header}}
 {{> create_project}}
-<div class="container emp-profile" style="background-color: #F0F0F0;">
+<div class="container" style="margin-top: 50px;">
         <div class="row">
-            <div class="col-md-10" >
+            <div class="col-md-2"></div>
+            <div class="col-md-8 my-3 p-3 bg-white rounded shadow-sm" >
+                <div style="float:right;">
+                    <button class="btn btn-primary" ><span class="material-icons" style="font-size: 18px;">star</span> <span class="badge badge-light">4</span></button>
+                    <button class="btn btn-primary" >Open in editor</button>
+                </div>
+                
                 <h4>
-                    <a href="/users/{{project.user_id}}">{{project.user_id}}</a> / <a href="/projects/{{project.user_id}}/{{project.project_name}}">{{project.project_name}}</a>
-                </h4>
-                <p>{{created}}</p>
-                <p>{{project.project_description}}</p>
+                    <a href="/users/{{project.user_id}}">{{project.user_id}}</a> <span class="text-muted">/</span> <a href="/projects/{{project.user_id}}/{{project.project_name}}">{{project.project_name}}</a>
+                </h4> 
+                <span class="d-block text-muted">{{created}}</span>
+                <span class="d-block">{{project.project_description}}</span>
                 
             </div>
         </div> 
-
+        
         <div class="row">
-            <div class="col-md-10">
-                {{readme}}
+            <div class="col-md-2"></div>
+            <div class="col-md-8 my-3 p-3 bg-white rounded shadow-sm">
+                {{#if readme}}
+                    {{readme}}
+                {{else}}
+                    <h4 class="text-muted">No readme found.</h4>
+                {{/if}}
             </div>
         </div> 
 </div>

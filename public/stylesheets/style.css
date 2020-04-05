@@ -73,7 +73,7 @@ a {
     color: #fff;
 }
 
-.btn {
+.btn-margin {
     margin: 5px;
 }
 
@@ -244,3 +244,6 @@ a {
     font-weight:bold;
 }
 
+.material-icons{
+    vertical-align: middle;
+}
