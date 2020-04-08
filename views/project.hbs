@@ -22,7 +22,9 @@
             <div class="col-md-2"></div>
             <div class="col-md-8 my-3 p-3 bg-white rounded shadow-sm">
                 {{#if readme}}
-                    {{readme}}
+                    <div class="markdown-body">
+                        {{{readme}}}
+                    </div>
                 {{else}}
                     <h4 class="text-muted">No readme found.</h4>
                 {{/if}}
