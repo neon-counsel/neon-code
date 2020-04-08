@@ -73,7 +73,7 @@ a {
     color: #fff;
 }
 
-.btn {
+.btn-margin {
     margin: 5px;
 }
 
@@ -235,4 +235,15 @@ a {
     position: absolute;
     margin-left: 40px;
     min-width: 50px;
+}
+
+#passstrength {
+    color:red;
+    font-family:verdana;
+    font-size:10px;
+    font-weight:bold;
+}
+
+.material-icons{
+    vertical-align: middle;
 }
