@@ -20,8 +20,7 @@ $(document).ready(function () {
                 'privacy': $('input[name="privacy"]:checked').val()
             },
             success: function(token) {
-                $(location).attr('href', '/');
-                // Redirect to a login page
+                $(location).attr('href', token.redirect);
             },
             error: function(errMsg) {
                 swal(

@@ -15,6 +15,8 @@
     "http-errors": "~1.6.3",
     "humanize": "0.0.9",
     "jsonwebtoken": "^8.5.1",
+    "markdown-it": "^10.0.0",
+    "markdown-splendor": "^1.0.1",
     "moment": "^2.24.0",
     "mongoose": "^5.8.9",
     "morgan": "~1.9.1"
