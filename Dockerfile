@@ -9,11 +9,10 @@ RUN apt-get update                              && \
     apt-get install -y libsecret-1-dev          && \
     apt-get install -y dumb-init                && \
     apt-get install -y nginx                    && \
-    apt-get install -y nano
-
-RUN sed -i "s/# en_US.UTF-8/en_US.UTF-8/" /etc/locale.gen \
-  && locale-gen
-ENV LANG=en_US.UTF-8
+    apt-get install -y nano                     && \
+    apt-get install -y sudo                     && \
+    apt-get install -y wget                     && \
+    apt-get install -y man
 
 RUN chsh -s /bin/bash
 ENV SHELL=/bin/bash
@@ -21,10 +20,6 @@ ENV SHELL=/bin/bash
 # install node
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
     apt-get install -y nodejs
-
-# install express
-RUN npm install -g express-generator && \
-    npm install express
 
 # install nodemon
 RUN npm install nodemon -g
@@ -38,7 +33,7 @@ RUN curl -SsL https://github.com/boxboat/fixuid/releases/download/v0.4/fixuid-0.
     mkdir -p /etc/fixuid && \
     printf "user: coder\ngroup: coder\n" > /etc/fixuid/config.yml
 
-COPY release/code-server*.tar.gz /tmp/
+RUN cd /tmp && wget https://github.com/cdr/code-server/releases/download/3.1.0/code-server-3.1.0-linux-x86_64.tar.gz
 RUN cd /tmp && tar -xzf code-server*.tar.gz && rm code-server*.tar.gz && \
   mv code-server* /usr/local/lib/code-server && \
   ln -s /usr/local/lib/code-server/code-server /usr/local/bin/code-server
@@ -54,3 +49,4 @@ USER coder
 
 # initialize the container
 ENTRYPOINT ["dumb-init", "fixuid", "-q", "/usr/local/bin/code-server", "--auth", "none", "--host", "0.0.0.0", "."]
+ 

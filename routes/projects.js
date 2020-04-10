@@ -198,22 +198,29 @@ router.post('/:user/:project/delete', function(req, res, next){
         var profile = verifyJWT(jwtString[1]);
         
         if (profile) {
-            if(profile.user_id == user) {
-                Project.deleteOne({user_id: user, project_name: project});
-                res.json({
-                    "status": "info",
-                    "body": "Deleted",
-                    "redirect" : ""
-                });
+            if(profile.user_name == user) {
+                try {
+                    Project.deleteOne({user_id: user, project_name: project});
+                    Project.save();
+                    res.json({
+                        "status": "info",
+                        "body": "Deleted",
+                        "redirect" : ""
+                    });
+                } catch (e) {
+                    res.send(e);
+                }
+                
+                
             }
             
         }
     } catch (err) {
-                res.status(401).json({
-                    "status": "info",
-                    "body": "Not allowed.",
-                    "redirect" : ""
-                });
+        res.status(401).json({
+            "status": "info",
+            "body": "Not allowed.",
+            "redirect" : ""
+        });
             
     }
 });
