@@ -4,6 +4,7 @@ var Project = require('../models/project');
 var jwt = require('jsonwebtoken');
 const {Docker} = require('node-docker-api');
 
+
 const docker = new Docker({ socketPath: '/var/run/docker.sock' });
 var moment = require('moment');
 var md = require('markdown-it')();
@@ -14,7 +15,6 @@ function verifyJWT(jwtString){
     var value = jwt.verify(jwtString, 'insertmessagehere');
     return value;
 }
-  
 
 router.get('/', function(req, res, next){
     try {
@@ -55,7 +55,8 @@ router.get('/:user/:project', function(req, res, next){
                 }
                 
                 var created = moment(project.when_created).format("DD/MM/YYYY");
-                res.render('project', { title: 'Neon Code', profile: profile, project: project, created: created, readme: readme});
+                var stars = project.stars.length;
+                res.render('project', { title: 'Neon Code', profile: profile, project: project, created: created, readme: readme, stars: stars});
             });
         }
     } catch (err) {
@@ -68,6 +69,8 @@ router.get('/:user/:project', function(req, res, next){
         });
     }
 });
+
+
 
 
 router.post('/new', function(req, res, next){
@@ -83,12 +86,12 @@ router.post('/new', function(req, res, next){
                 if(err)
                     res.send(err);
                 
-                if(project){
+                if(project) {
                     res.status(401).json({
                         "status": "info",
                         "body": "Project name already taken"
                     });
-                } else{
+                } else {
                     var newProject = new Project();
         
                     newProject.project_name = projectname;
@@ -99,20 +102,16 @@ router.post('/new', function(req, res, next){
                     newProject.save(function(err, project){
                         if(err)
                             throw err;
-<<<<<<< HEAD
                         docker.container.create({
-                            Image: 'neoncounsel/neon-code',
+                            Image: 'codercom/code-server',
                             name: project._id+''}).catch(error => console.log(error));
-                        res.json({ 'Success': "Project created"});
 
-=======
 
                         var dir = process.env.PROJECTDIR || (process.env.HOME+'/projects/') + project.user_id + "/" + project.project_name;
 
                         fs.mkdirSync(dir, { recursive: true })
                         fs.writeFileSync(dir+"/README.md", '# ' + project.project_name);
                         res.json({ 'Success': "Project created", "redirect": "/projects/"+project.user_id + "/" + project.project_name});
->>>>>>> 3000f8ccdc213f788d393320f35aa20d147b1941
                     });
                    
                 }
@@ -121,9 +120,110 @@ router.post('/new', function(req, res, next){
     } catch (err) {
         res.status(401).json({
             "status": "info",
-            "body": "Not allowed."
+            "body": "Not allowed.",
+            "redirect" : ""
         });
     }
 });
+
+
+router.get('/:user/:project/edit', function(req, res, next){
+    var user = req.params.user;
+    var project = req.params.project;
+
+    try {
+        var jwtString = req.cookies.Authorization.split(" ");
+        var profile = verifyJWT(jwtString[1]);
+        
+        if (profile) {
+            Project.findOne({user_id: user, project_name: project}, function(err, project) {
+                if(err)
+                    res.send(err);
+                // try{
+                //     var rFile = fs.readFileSync(process.env.PROJECTDIR || (process.env.HOME+'/projects/') + project.user_id + '/' + project.project_name+'/README.md');
+                //     var readme = md.render(rFile.toString());
+                // } catch (err){
+                //     var readme = '';
+                // }
+                
+                // var created = moment(project.when_created).format("DD/MM/YYYY");
+                res.render('editor', { title: 'Neon Code', profile: profile, project: project});
+            });
+        }
+    } catch (err) {
+        Project.findOne({user_id: user, project_name: project, publicORprivate: "public"}, function(err, project) {
+            if(err)
+                res.status(401).json({
+                    "status": "info",
+                    "body": "Not allowed.",
+                    "redirect" : ""
+                });
+            
+            res.render('project', { title: 'Neon Code', profile: profile, project: project});
+        });
+    }
+});
+
+router.post('/:user/:project/star', function(req, res, next){
+    var user = req.params.user;
+    var project = req.params.project;
+
+    try {
+        var jwtString = req.cookies.Authorization.split(" ");
+        var profile = verifyJWT(jwtString[1]);
+        
+        if (profile) {
+            Project.findOne({user_id: user, project_name: project}, function(err, project) {
+                if(err)
+                    res.send(err);
+
+                project.stars.push(profile.user_id);
+                project.save();
+                res.json({
+                    "status": "info",
+                    "body": "Liked",
+                    "redirect" : ""
+                });
+            });
+        }
+    } catch (err) {
+                res.status(401).json({
+                    "status": "info",
+                    "body": "Not allowed.",
+                    "redirect" : ""
+                });
+            
+    }
+});
+
+router.post('/:user/:project/delete', function(req, res, next){
+    var user = req.params.user;
+    var project = req.params.project;
+
+    try {
+        var jwtString = req.cookies.Authorization.split(" ");
+        var profile = verifyJWT(jwtString[1]);
+        
+        if (profile) {
+            if(profile.user_id == user) {
+                Project.deleteOne({user_id: user, project_name: project});
+                res.json({
+                    "status": "info",
+                    "body": "Deleted",
+                    "redirect" : ""
+                });
+            }
+            
+        }
+    } catch (err) {
+                res.status(401).json({
+                    "status": "info",
+                    "body": "Not allowed.",
+                    "redirect" : ""
+                });
+            
+    }
+});
+
 
 module.exports = router;

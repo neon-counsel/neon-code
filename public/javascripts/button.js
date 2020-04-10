@@ -8,6 +8,28 @@ $(document).ready(function () {
 
     });
 
+    $("#buttonStar").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: $("#buttonStar").val()+'/star',
+            dataType: 'json',
+            data: {
+            },
+            success: function(token) {
+                console.log("SUCCESS");
+                //$(location).attr('href', token.redirect);
+            },
+            error: function(errMsg) {
+                swal(
+                    'Oops...',
+                    errMsg.responseJSON.body,
+                    'error'
+                )
+            }
+        });
+
+    });
+
     $("#createProject").click(function () {
         console.log($('input[name="privacy"]:checked').val());
         $.ajax({

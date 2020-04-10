@@ -1,0 +1,14 @@
+<div class="card-deck my-3 p-3">
+
+{{#each project_cards}}
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">
+      <a href="/users/{{this.user_id}}">{{this.user_id}}</a> <span class="text-muted">/</span> <a href="/projects/{{this.user_id}}/{{this.project_name}}">{{this.project_name}}</a>
+      <p class="card-text"><small class="text-muted">{{this.user_id}}/{{this.project_name}} - {{this.stars.length}}<span class="material-icons" style="font-size: 18px;">star</span></small></p>
+    <p class="card-text">{{this.project_description}}</p>
+  </div>
+</div>
+
+{{/each}}
+</div>

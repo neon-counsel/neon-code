@@ -7,7 +7,10 @@
 var app = require('../app');
 var debug = require('debug')('site:server');
 var http = require('http');
-
+var httpProxy = require('http-proxy');
+var proxy = httpProxy.createProxyServer({
+  ws: true,
+});
 /**
  * Get port from environment and store in Express.
  */
@@ -25,9 +28,18 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
+
 server.listen(port);
+
+server.on('upgrade', function(req, res) {
+  console.log("\n"+req.headers.host+"\n");
+  proxy.ws(req, res, {target: 'ws://127.0.0.1:8080'}, function(e){
+    console.log(e.message);
+  });
+});
 server.on('error', onError);
 server.on('listening', onListening);
+
 
 /**
  * Normalize a port into a number, string, or false.

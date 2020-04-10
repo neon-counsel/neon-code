@@ -13,6 +13,7 @@
     "express": "~4.16.1",
     "hbs": "^4.1.0",
     "http-errors": "~1.6.3",
+    "http-proxy": "^1.18.0",
     "humanize": "0.0.9",
     "jsonwebtoken": "^8.5.1",
     "markdown-it": "^10.0.0",
@@ -20,6 +21,7 @@
     "moment": "^2.24.0",
     "mongoose": "^5.8.9",
     "morgan": "~1.9.1",
-    "node-docker-api": "^1.1.22"
+    "node-docker-api": "^1.1.22",
+    "vhost": "^3.0.2"
   }
 }

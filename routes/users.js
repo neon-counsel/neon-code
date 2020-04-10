@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/users');
+var Project = require('../models/project');
+
 var jwt = require('jsonwebtoken');
 
 //Verify a JWT
@@ -16,18 +18,8 @@ router.get('/', function(req, res, next) {
 router.get('/register', function(req, res, next) {
     res.render('register', { title: 'Neon Code' });
 });
-router.get('/profile', function(req, res, next) {
-    try {
-        var jwtString = req.cookies.Authorization.split(" ");
-        var profile = verifyJWT(jwtString[1]);
-        if (profile) {
-            res.render('profile', { title: 'Neon Code', profile: profile });
-        }
-    } catch (err) {
-        res.render('index', { title: 'Neon Code' });
-    }
 
-});
+
 
 router.post('/register', function(req, res, next) {
     var username = req.body.user_name;
@@ -50,7 +42,7 @@ router.post('/register', function(req, res, next) {
             newUser.user_name = username;
             newUser.password = newUser.generateHash(password);
             newUser.email = email;
-            newUser.access_token = createJWT({ user_name: username });
+            newUser.access_token = createJWT({user_name: username, vs_port: 8080 });
             newUser.save(function(err, user) {
                 if (err)
                     throw err;
@@ -78,7 +70,7 @@ router.post('/login', function(req, res, next) {
             //Compare passwords
             if (user.validPassword(password)) {
                 //Success: Assign new access tokens for the sessions
-                user.access_token = createJWT({ user_name: username });
+                user.access_token = createJWT({ user_id: user._id, user_name: username, vs_port: 8080});
                 user.save();
                 res.cookie('Authorization', 'Bearer ' + user.access_token);
                 res.json({ 'Success': 'Logged in' });
@@ -100,6 +92,29 @@ router.post('/login', function(req, res, next) {
 router.get('/logout', function(req, res, next) {
     res.clearCookie("Authorization");
     res.redirect('/');
+});
+
+router.get('/:user', function(req, res, next) {
+    var user = req.params.user;
+    User.findOne({ 'user_name': user }, function(err, user) {
+        if (err){
+            res.status(404);
+            return;
+        }else{
+            Project.find({user_id: user.user_name}, function(err, projects) {
+                if(err) {
+                    res.send(err);
+                }else {
+                    var totalStars = 0;
+                projects.forEach(function(project){
+                    totalStars += project.stars.length;
+                });
+                res.render('profile', { title: 'Neon Code', profile: user, projects: projects, stars: totalStars});
+                }
+            });
+        }
+        
+    });
 });
 
 //Create a JWT
