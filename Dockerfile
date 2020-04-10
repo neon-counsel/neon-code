@@ -1,6 +1,4 @@
-FROM ubuntu:18.04
-
-ENV USER root
+FROM debian:10
 
 # install requirements
 RUN apt-get update                              && \
@@ -13,50 +11,46 @@ RUN apt-get update                              && \
     apt-get install -y nginx                    && \
     apt-get install -y nano
 
+RUN sed -i "s/# en_US.UTF-8/en_US.UTF-8/" /etc/locale.gen \
+  && locale-gen
+ENV LANG=en_US.UTF-8
+
+RUN chsh -s /bin/bash
+ENV SHELL=/bin/bash
+
 # install node
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
     apt-get install -y nodejs
-
-# install yarn
-RUN npm install -g yarn@1.13
 
 # install express
 RUN npm install -g express-generator && \
     npm install express
 
-# install gulp
-RUN npm install gulp-cli -g
-
 # install nodemon
 RUN npm install nodemon -g
 
-# download vscode and code-server
-RUN git clone https://github.com/microsoft/vscode                       && \
-    cd vscode                                                           && \
-    git checkout 1.38.1                                                 && \
-    git clone https://github.com/neon-counsel/code-server src/vs/server
+RUN adduser --gecos '' --disabled-password coder && \
+  echo "coder ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/nopasswd
 
-# setup the build location
-RUN mkdir /codeserver
-ENV OUT /codeserver
+RUN curl -SsL https://github.com/boxboat/fixuid/releases/download/v0.4/fixuid-0.4-linux-amd64.tar.gz | tar -C /usr/local/bin -xzf - && \
+    chown root:root /usr/local/bin/fixuid && \
+    chmod 4755 /usr/local/bin/fixuid && \
+    mkdir -p /etc/fixuid && \
+    printf "user: coder\ngroup: coder\n" > /etc/fixuid/config.yml
 
-# patch vscode and install dependencies
-RUN cd /vscode/src/vs/server                && \
-    yarn patch:apply                        && \
-    yarn                                    
-
-# compile vscode
-RUN cd /vscode                              && \
-    gulp compile --max_old_space_size=4095  && \
-    cd /vscode/src/vs/server                && \
-    ./scripts/tasks.bash build 1.38.1 development
+COPY release/code-server*.tar.gz /tmp/
+RUN cd /tmp && tar -xzf code-server*.tar.gz && rm code-server*.tar.gz && \
+  mv code-server* /usr/local/lib/code-server && \
+  ln -s /usr/local/lib/code-server/code-server /usr/local/bin/code-server
 
 # setup the dev volume
-VOLUME /site
-WORKDIR /site
+VOLUME /code
+WORKDIR /code
 
 # expose the http port
 EXPOSE 80
+EXPOSE 8080
+USER coder
 
 # initialize the container
-ENTRYPOINT ["dumb-init", "--"]
+ENTRYPOINT ["dumb-init", "fixuid", "-q", "/usr/local/bin/code-server", "--auth", "none", "--host", "0.0.0.0", "."]

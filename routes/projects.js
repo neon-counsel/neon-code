@@ -139,15 +139,8 @@ router.get('/:user/:project/edit', function(req, res, next){
             Project.findOne({user_id: user, project_name: project}, function(err, project) {
                 if(err)
                     res.send(err);
-                // try{
-                //     var rFile = fs.readFileSync(process.env.PROJECTDIR || (process.env.HOME+'/projects/') + project.user_id + '/' + project.project_name+'/README.md');
-                //     var readme = md.render(rFile.toString());
-                // } catch (err){
-                //     var readme = '';
-                // }
-                
-                // var created = moment(project.when_created).format("DD/MM/YYYY");
-                res.render('editor', { title: 'Neon Code', profile: profile, project: project});
+
+                res.render('editor', { title: 'Neon Code', profile: profile, project: project, cookie: jwtString[1]});
             });
         }
     } catch (err) {

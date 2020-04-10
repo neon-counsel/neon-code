@@ -25,32 +25,40 @@ router.post('/register', function(req, res, next) {
     var username = req.body.user_name;
     var password = req.body.password;
     var email = req.body.email;
-    //Check if account already exists
-    User.findOne({ 'user_name': username }, function(err, user) {
-        if (err)
-            res.send(err);
-        //Check to see if there's already a user with that email
-        if (user) {
-            res.status(401).json({
-                "status": "info",
-                "body": "Username already taken"
-            });
-        } else {
-            //If there is no user with that username, create the user
-            var newUser = new User();
-            //Set the user's local credentials
-            newUser.user_name = username;
-            newUser.password = newUser.generateHash(password);
-            newUser.email = email;
-            newUser.access_token = createJWT({user_name: username, vs_port: 8080 });
-            newUser.save(function(err, user) {
-                if (err)
-                    throw err;
-                res.cookie('Authorization', 'Bearer ' + user.access_token);
-                res.json({ 'Success': 'Account created' });
-            });
-        }
-    });
+    if(username === "" || password === "" || email === ""){
+        res.status(401).json({
+            "status": "info",
+            "body": "Missing data"
+        });
+    }else {
+        //Check if account already exists
+        User.findOne({ 'user_name': username }, function(err, user) {
+            if (err)
+                res.send(err);
+            //Check to see if there's already a user with that email
+            if (user) {
+                res.status(401).json({
+                    "status": "info",
+                    "body": "Username already taken"
+                });
+            } else {
+                //If there is no user with that username, create the user
+                var newUser = new User();
+                //Set the user's local credentials
+                newUser.user_name = username;
+                newUser.password = newUser.generateHash(password);
+                newUser.email = email;
+                newUser.access_token = createJWT({user_name: username, vs_port: 8080 });
+                newUser.save(function(err, user) {
+                    if (err)
+                        throw err;
+                    res.cookie('Authorization', 'Bearer ' + user.access_token);
+                    res.json({ 'Success': 'Account created' });
+                });
+            }
+        });
+    }
+    
 });
 
 router.get('/login', function(req, res, next) {

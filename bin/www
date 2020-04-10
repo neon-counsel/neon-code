@@ -32,7 +32,6 @@ var server = http.createServer(app);
 server.listen(port);
 
 server.on('upgrade', function(req, res) {
-  console.log("\n"+req.headers.host+"\n");
   proxy.ws(req, res, {target: 'ws://127.0.0.1:8080'}, function(e){
     console.log(e.message);
   });

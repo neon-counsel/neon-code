@@ -31,24 +31,17 @@ app.set('view engine', 'hbs');
 
 // must be placed before urlencoded is used, otherwise POST requests are not sent properly 
 app.use(vhost("code.neoncode.ovh", function handle (req, res, next) {
-  proxy.web(req, res, { target: 'http://127.0.0.1:8080'}, function(e){
-    console.log(e);
-  });
-  // try {
-  //   var jwtString = req.cookies.Authorization.split(" ");
-  //   var profile = verifyJWT(jwtString[1]);
+  try {
+    var profile = verifyJWT(req.query.cookieAuth);
+    if (profile) {
+      proxy.web(req, res, { target: 'http://127.0.0.1:'+profile.vs_port}, function(e){
+        console.log(e);
+      });
+    }
+  } catch (err) {
     
-  //   if (profile) {
+  }
 
-      
-  //       // Project.find({}, function(err, projects) {
-    
-  //       //     res.render('explore', { title: 'Neon Code', profile: profile, projects: projects});
-  //       // });
-  //   }
-  // } catch (err) {
-  //     res.send("Nah");
-  // }
   
 }));
 
