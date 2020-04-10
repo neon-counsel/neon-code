@@ -5,8 +5,11 @@
             <div class="col-md-2"></div>
             <div class="col-md-8 my-3 p-3 bg-white rounded shadow-sm" >
                 <div style="float:right;">
-                    <button class="btn btn-primary" ><span class="material-icons" style="font-size: 18px;">star</span> <span class="badge badge-light">4</span></button>
-                    <button class="btn btn-primary" >Open in editor</button>
+                    <button class="btn btn-info" id="buttonStar" value="/projects/{{project.user_id}}/{{project.project_name}}">Edit</button>
+                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" id="buttonStar" value="/projects/{{project.user_id}}/{{project.project_name}}">Delete</button>
+                    <button class="btn btn-primary" id="buttonStar" value="/projects/{{project.user_id}}/{{project.project_name}}"><span class="material-icons" style="font-size: 18px;">star</span> <span class="badge badge-light">{{project.stars.length}}</span></button>
+                    <button class="btn btn-primary" onclick='window.location = "/projects/{{project.user_id}}/{{project.project_name}}/edit";'>Open in editor</button>
+
                 </div>
                 
                 <h4>
@@ -22,10 +25,32 @@
             <div class="col-md-2"></div>
             <div class="col-md-8 my-3 p-3 bg-white rounded shadow-sm">
                 {{#if readme}}
-                    {{readme}}
+                    <div class="markdown-body">
+                        {{{readme}}}
+                    </div>
                 {{else}}
                     <h4 class="text-muted">No readme found.</h4>
                 {{/if}}
             </div>
         </div> 
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Are you sure?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Deleting the project will delete all associated files.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger">Confirm</button>
+      </div>
+    </div>
+  </div>
 </div>
