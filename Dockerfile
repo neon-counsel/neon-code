@@ -50,6 +50,7 @@ RUN cd /tmp && wget https://github.com/cdr/code-server/releases/download/3.1.0/c
 EXPOSE 8080
 USER coder
 WORKDIR /code
+ENV PASSWORD=123456
 # initialize the container
-ENTRYPOINT ["dumb-init", "fixuid", "-q", "/usr/local/bin/code-server", "--auth", "none", "--host", "0.0.0.0", "."]
+ENTRYPOINT ["dumb-init", "fixuid", "-q", "/usr/local/bin/code-server", "--host", "0.0.0.0", "."]
  
