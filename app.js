@@ -7,6 +7,7 @@ var hbs = require('hbs');
 var vhost = require('vhost');
 var httpProxy = require('http-proxy');
 var jwt = require('jsonwebtoken');
+var User = require('./models/users');
 
 //Verify a JWT
 function verifyJWT(jwtString){
@@ -23,36 +24,46 @@ var usersRouter = require('./routes/users');
 var projectsRouter = require('./routes/projects');
 
 hbs.registerPartials(__dirname + '/views/partials');
+hbs.registerHelper('if_equal', function(arg1, arg2, options) {
+  return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+});
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+app.use(cookieParser());
 
 // must be placed before urlencoded is used, otherwise POST requests are not sent properly 
 app.use(vhost("code.neoncode.ovh", function handle (req, res, next) {
   try {
-    var profile = verifyJWT(req.query.cookieAuth);
+    var jwtString = req.cookies.Authorization.split(" ");
+    var profile = verifyJWT(jwtString[1]);
+    
     if (profile) {
-      proxy.web(req, res, { target: 'http://127.0.0.1:'+profile.vs_port}, function(e){
-        console.log(e);
+      User.findOne({user_name: profile.user_name}, function(err, user){
+        if(err){
+          res.send(404);
+          return;
+        }
+        proxy.web(req, res, { target: 'http://127.0.0.1:'+user.port}, function(e){
+          console.log(e);
+        });
       });
+      
     }
   } catch (err) {
     
   }
-
+  
   
 }));
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+
 app.use(express.static(path.join(__dirname, 'public')));
-
-
-
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/projects', projectsRouter);

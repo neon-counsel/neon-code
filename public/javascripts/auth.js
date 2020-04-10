@@ -1,8 +1,5 @@
 $(document).ready(
     function() {
-        $('#vscode-editor').on('load', function() {
-            alert('frame has (re)loaded ');
-        });
 
         /**
          * Event handler for when the user attempts to register

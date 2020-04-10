@@ -236,12 +236,6 @@ a {
     min-width: 50px;
 }
 
-.btn btn-secondary dropdown-toggle {
-    position: absolute;
-    margin-left: 40px;
-    min-width: 50px;
-}
-
 #passstrength {
     color:red;
     font-family:verdana;

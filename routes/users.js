@@ -19,8 +19,6 @@ router.get('/register', function(req, res, next) {
     res.render('register', { title: 'Neon Code' });
 });
 
-
-
 router.post('/register', function(req, res, next) {
     var username = req.body.user_name;
     var password = req.body.password;
@@ -48,13 +46,15 @@ router.post('/register', function(req, res, next) {
                 newUser.user_name = username;
                 newUser.password = newUser.generateHash(password);
                 newUser.email = email;
-                newUser.access_token = createJWT({user_name: username, vs_port: 8080 });
+                newUser.access_token = createJWT({user_name: username , vs_port: 3502});
                 newUser.save(function(err, user) {
                     if (err)
                         throw err;
-                    res.cookie('Authorization', 'Bearer ' + user.access_token);
+                        res.cookie('Authorization', 'Bearer ' + user.access_token, {domain:'.neoncode.ovh'});
                     res.json({ 'Success': 'Account created' });
+                    User.findOneAndUpdate({user_name: username}, {$inc : {c : 1}}).exec();
                 });
+
             }
         });
     }
@@ -78,9 +78,9 @@ router.post('/login', function(req, res, next) {
             //Compare passwords
             if (user.validPassword(password)) {
                 //Success: Assign new access tokens for the sessions
-                user.access_token = createJWT({ user_id: user._id, user_name: username, vs_port: 8080});
+                user.access_token = createJWT({ user_id: user._id, user_name: username, vs_port: 3502});
                 user.save();
-                res.cookie('Authorization', 'Bearer ' + user.access_token);
+                res.cookie('Authorization', 'Bearer ' + user.access_token, {domain:'.neoncode.ovh'});
                 res.json({ 'Success': 'Logged in' });
             } else {
                 res.status(401).send({
@@ -98,15 +98,20 @@ router.post('/login', function(req, res, next) {
 });
 
 router.get('/logout', function(req, res, next) {
-    res.clearCookie("Authorization");
+    res.clearCookie("Authorization", {domain:'.neoncode.ovh'});
     res.redirect('/');
 });
 
 router.get('/:user', function(req, res, next) {
     var user = req.params.user;
-    User.findOne({ 'user_name': user }, function(err, user) {
+
+    try {
+        var jwtString = req.cookies.Authorization.split(" ");
+        var profile = verifyJWT(jwtString[1]);
+        if (profile) {
+          User.findOne({ 'user_name': user }, function(err, user) {
         if (err){
-            res.status(404);
+            res.send(404);
             return;
         }else{
             Project.find({user_id: user.user_name}, function(err, projects) {
@@ -114,15 +119,22 @@ router.get('/:user', function(req, res, next) {
                     res.send(err);
                 }else {
                     var totalStars = 0;
+                
                 projects.forEach(function(project){
                     totalStars += project.stars.length;
                 });
-                res.render('profile', { title: 'Neon Code', profile: user, projects: projects, stars: totalStars});
+                res.render('profile', { title: 'Neon Code', profile: profile, user: user, projects: projects, stars: totalStars});
                 }
             });
         }
         
     });
+        }
+    } catch (err) {
+        res.redirect("/users/register");
+    }
+
+    
 });
 
 //Create a JWT
