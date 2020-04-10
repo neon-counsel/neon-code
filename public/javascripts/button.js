@@ -30,6 +30,28 @@ $(document).ready(function () {
 
     });
 
+    $("#deleteButton").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: $("#deleteButton").val(),
+            dataType: 'json',
+            data: {
+            },
+            success: function(token) {
+                console.log("SUCCESS");
+                //$(location).attr('href', token.redirect);
+            },
+            error: function(errMsg) {
+                swal(
+                    'Oops...',
+                    errMsg.responseJSON.body,
+                    'error'
+                )
+            }
+        });
+
+    });
+
     $("#createProject").click(function () {
         console.log($('input[name="privacy"]:checked').val());
         $.ajax({
