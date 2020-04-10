@@ -1,8 +1,8 @@
-<div class="modal" tabindex="-1" role="dialog" id="project_modal">
+<div class="modal" tabindex="-1" role="dialog" id="edit_modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Create new project</h5>
+        <h5 class="modal-title">Edit {{project.project_name}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -15,21 +15,21 @@
               <label for="inputEmail4" class="user-label">
                 User
               </label>
-              <input type="text" class="form-control" id="user" placeholder= "{{profile.user_name}}" readonly>
+              <input type="text" class="form-control" id="userS" value= "{{profile.user_name}}" readonly>
             </div>
             <div class="form-group col-md-6">
               <label for="inputPassword4">Project name</label>
-              <input type="text" class="form-control" id="text" placeholder="Project name">
+              <input type="text" class="form-control" id="textS" placeholder="" value="{{project.project_name}}">
             </div>
           </div>
           <div class="form-group">
             <label for="inputAddress">Description</label>
-            <input type="text" class="form-control" id="desc" placeholder="Short description">
+            <input type="text" class="form-control" id="descS" placeholder="Short description" value="{{project.project_description}}">
           </div>
 
           <div class="form-group">
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="privacy" id="gridCheck" value="public" checked>
+              <input class="form-check-input" type="radio" name="privacyS" id="gridCheck" value="public" {{#if_equal project.publicORprivate "public"}}checked{{/if_equal}}>
               <i class="material-icons w3-small">public </i>
               <label class="form-check-label" for="gridCheck">
 
@@ -37,7 +37,7 @@
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="privacy" id="gridCheck" value="private">
+              <input class="form-check-input" type="radio" name="privacyS" id="gridCheck" value="private" {{#if_equal project.publicORprivate "private"}}checked{{/if_equal}}>
               <label class="form-check-label" for="gridCheck"><i class="material-icons">
                   lock
                 </i>
@@ -49,7 +49,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button id="createProject" type="button" class="btn btn-primary">Create Project</button>
+        <button id="saveProject" type="button" class="btn btn-primary" value="/projects/{{project.user_id}}/{{project.project_name}}/save">Save</button>
       </div>
     </div>
   </div>

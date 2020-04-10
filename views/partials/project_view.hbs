@@ -6,7 +6,13 @@
       <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
         <div class="d-flex justify-content-between align-items-center w-100">
           
-          <strong class="text-gray-dark"><a href="/projects/{{this.user_id}}/{{this.project_name}}">{{this.user_id}}/{{this.project_name}}</a> <i class="material-icons" style="font-size: 12px;">public</i> </strong>
+          <strong class="text-gray-dark"><a href="/projects/{{this.user_id}}/{{this.project_name}}">{{this.user_id}}/{{this.project_name}}</a>
+          {{#if_equal this.publicORprivate "private"}}
+              <i class="material-icons" style="font-size: 12px;">lock</i>
+          {{else}}
+              <i class="material-icons" style="font-size: 12px;">public</i>
+          {{/if_equal}}
+          </strong>
           
           <a href="/projects/{{this.user_id}}/{{this.project_name}}">View</a>
         </div>

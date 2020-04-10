@@ -8,9 +8,19 @@ var app = require('../app');
 var debug = require('debug')('site:server');
 var http = require('http');
 var httpProxy = require('http-proxy');
+var jwt = require('jsonwebtoken');
+var cookieParser = require('cookie-parser');
+var User = require('../models/users');
 var proxy = httpProxy.createProxyServer({
   ws: true,
 });
+
+//Verify a JWT
+function verifyJWT(jwtString){
+  var value = jwt.verify(jwtString, 'insertmessagehere');
+  return value;
+}
+
 /**
  * Get port from environment and store in Express.
  */
@@ -31,10 +41,42 @@ var server = http.createServer(app);
 
 server.listen(port);
 
+function parseCookies (request) {
+  var list = {},
+      rc = request.headers.cookie;
+
+  rc && rc.split(';').forEach(function( cookie ) {
+      var parts = cookie.split('=');
+      list[parts.shift().trim()] = decodeURI(parts.join('='));
+  });
+
+  return list;
+}
+
 server.on('upgrade', function(req, res) {
-  proxy.ws(req, res, {target: 'ws://127.0.0.1:8080'}, function(e){
+  console.log(parseCookies(req).Authorization);
+  try {
+    var jwtString = parseCookies(req).Authorization.split(" ");
+    var profile = verifyJWT(jwtString[1]);
+    
+    if (profile) {
+      console.log(profile);
+      User.findOne({user_name: profile.user_name}, function(err, user){
+        if(err){
+          res.send(404);
+          return;
+        }
+        console.log(user.port);
+        proxy.ws(req, res, {target: 'ws://127.0.0.1:'+user.port}, function(e){
     console.log(e.message);
   });
+      });
+      
+    }
+  } catch (err) {
+    
+  }
+  
 });
 server.on('error', onError);
 server.on('listening', onListening);

@@ -6,7 +6,9 @@ require('./util');
 var usersSchema = new Schema({
   user_name: {type : String},
   password: {type : String},
-  access_token: {type : String}
+  access_token: {type : String},
+  Container: [],
+  port: {type: Number},
 });
 
 //Hash password for storage in DB

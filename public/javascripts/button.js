@@ -38,8 +38,7 @@ $(document).ready(function () {
             data: {
             },
             success: function(token) {
-                console.log("SUCCESS");
-                //$(location).attr('href', token.redirect);
+                $(location).attr('href', token.redirect);
             },
             error: function(errMsg) {
                 swal(
@@ -50,6 +49,30 @@ $(document).ready(function () {
             }
         });
 
+    });
+
+    $("#saveProject").click(function () {
+        console.log($('input[name="privacy"]:checked').val());
+        $.ajax({
+            type: 'POST',
+            url: $("#saveProject").val(),
+            dataType: 'json',
+            data: {
+                'project_name': $("#textS").val(),
+                'description': $("#descS").val(),
+                'privacy': $('input[name="privacyS"]:checked').val()
+            },
+            success: function(token) {
+                $(location).attr('href', token.redirect);
+            },
+            error: function(errMsg) {
+                swal(
+                    'Oops...',
+                    errMsg.responseJSON.body,
+                    'error'
+                )
+            }
+        });
     });
 
     $("#createProject").click(function () {
