@@ -16,7 +16,7 @@
     "http-errors": "~1.6.3",
     "http-proxy": "^1.18.0",
     "humanize": "0.0.9",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "markdown-it": "^10.0.0",
     "markdown-splendor": "^1.0.1",
     "moment": "^2.24.0",
